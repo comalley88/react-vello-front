@@ -33,8 +33,6 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignUp() {
     const { handleSubmit, control } = useForm<SignupFormInputs>();
     const [errorMessage, setErrorMessage] = React.useState(null)
@@ -55,7 +53,6 @@ export default function SignUp() {
     };
     
   return (
-    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -138,6 +135,7 @@ export default function SignUp() {
             <Button
               type="submit"
               fullWidth
+              color='primary'
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
@@ -154,6 +152,5 @@ export default function SignUp() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
   );
 }

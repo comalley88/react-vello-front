@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextInput from '../components/TextInput';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +17,7 @@ import { errorSelector } from '../features/auth/state/appStateSlice';
 import { AppDispatch, RootState } from '../features/auth/state/store';
 import { useDispatch, useSelector } from "react-redux";
 import { currentUserSelector, jwtSelector, signIn } from '../features/auth/state/auth';
+import NavBar from '../components/NavBar';
 
 interface LoginFormInputs {
     email: string,
@@ -40,7 +40,6 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
 
 export default function Login() {
   const dispatch: AppDispatch = useDispatch();
@@ -74,11 +73,11 @@ export default function Login() {
 
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
+    <NavBar/>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
-          className="rounded-r-3xl rounded-br-3xl"
           item
           xs={false}
           sm={4}
@@ -144,6 +143,7 @@ export default function Login() {
                 label="Remember me"
               />
               <Button
+                color='primary'
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -168,6 +168,7 @@ export default function Login() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </>
+    
   );
 }
