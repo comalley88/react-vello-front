@@ -23,7 +23,7 @@ export default function ProgressMobileStepper() {
       steps={6}
       position="static"
       activeStep={activeStep}
-      sx={{ flexGrow: 1, mx: "auto" }}
+      sx={{width: "100%", flexGrow: 1, mx: "auto" }}
       nextButton={
         <Button 
         color='primary'

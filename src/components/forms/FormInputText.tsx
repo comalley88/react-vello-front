@@ -1,6 +1,6 @@
-import { Control, Controller, FieldValues} from "react-hook-form";
+import {Controller} from "react-hook-form";
 import React from "react";
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
 
 export interface IFormInputText {
   name: string;
@@ -8,7 +8,7 @@ export interface IFormInputText {
   control: any
 }
 
-export const FormInputText = ({ name, control, label }: IFormInputText) => {
+export const FormInputText = ({ name, control, label, ...props }: IFormInputText & TextFieldProps) => {
 
 return (
   <Controller
@@ -16,6 +16,7 @@ return (
         control={control}
         render={({ field: { onChange, value } }) => (
           <TextField
+          {...props}
           fullWidth
           variant={'outlined'}
           autoFocus
