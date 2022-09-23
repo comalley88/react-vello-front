@@ -4,7 +4,7 @@ import axios from "axios";
 import apiUrls from "../../../api";
 import { storeAuthInLocalStorage } from "../../utils/localStroage";
 import { IAppLoaderAction } from "../../auth/state/loaderHandleMiddleware";
-import { RootState } from "./store";
+import { RootState } from "../../../common/state/store";
 
 export interface IAuthFormData {
   email: string;

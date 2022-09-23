@@ -10,6 +10,7 @@ export default function ProgressMobileStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
+    //
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -23,7 +24,7 @@ export default function ProgressMobileStepper() {
       steps={6}
       position="static"
       activeStep={activeStep}
-      sx={{width: "100%", flexGrow: 1, mx: "auto" }}
+      sx={{width: "100%", flexGrow: 1, mx: "auto", px: 0 }}
       nextButton={
         <Button 
         color='primary'

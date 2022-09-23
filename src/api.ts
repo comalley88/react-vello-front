@@ -7,6 +7,9 @@ const apiUrls = {
     },
     auth: {
         signIn: `${baseUrl}/api/auth/local`,
+    },
+    listings: {
+        all: `${baseUrl}/api/bike-listings`,
     }
 }
 

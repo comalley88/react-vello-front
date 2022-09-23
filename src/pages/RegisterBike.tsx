@@ -1,18 +1,31 @@
-import { autocompleteClasses, Button, Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import React from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm} from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../common/state/hooks';
 import { FormInputText } from '../components/forms/FormInputText'
 import ProgressMobileStepper from '../components/forms/Stepper';
 import SimplePaper from '../components/Paper';
+import { IListingFormValues, setNewListing } from '../features/listing/state/listingSlice';
 
-export type FormValues = {
-    email: string,
-    username: string,
-}
 const RegisterBike = () => {
-    const {control, handleSubmit } = useForm<FormValues>({defaultValues: { email: "",
-      username: "",}});
-    const onSubmit: SubmitHandler<FormValues> = data => console.log(data);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+    const {control, handleSubmit } = useForm<IListingFormValues>({defaultValues: { 
+      brand: "",
+      model: "",
+      yearPurchased: 0,
+      description: "",
+      options: []
+    }});
+    
+    const onSubmit = (data: IListingFormValues) => {
+      console.log("data is", data)
+      dispatch(setNewListing(data));
+      navigate("/page2");
+      };
+
   return (
     <>
     <Container>
@@ -22,15 +35,15 @@ const RegisterBike = () => {
         <FormInputText sx={
           {my: 2}
         } 
-        name='email' 
-        label='email' 
+        name='brand' 
+        label='brand' 
         control={control}/>
         <FormInputText 
         sx={
           {my: 2}
         } 
-        name='username' 
-        label='username' 
+        name='model' 
+        label='model' 
         control={control}/>
     <Button color='primary' variant="contained" type="submit">
       SUBMIT

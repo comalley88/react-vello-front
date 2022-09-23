@@ -14,7 +14,7 @@ import TextInput from '../components/TextInput';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { errorSelector } from '../features/auth/state/appStateSlice';
-import { AppDispatch, RootState } from '../features/auth/state/store';
+import { AppDispatch, RootState } from '../common/state/store';
 import { useDispatch, useSelector } from "react-redux";
 import { currentUserSelector, jwtSelector, signIn } from '../features/auth/state/auth';
 import NavBar from '../components/NavBar';

@@ -6,3 +6,11 @@ export interface IUser {
     created_at: string;
     updated_at: string;
   }
+
+export interface IListing {
+  brand: string,
+  model: string,
+  yearPurchased: number,
+  description: description,
+  options: string,
+}
