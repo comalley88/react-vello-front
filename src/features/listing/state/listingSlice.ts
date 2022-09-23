@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrls from "../../../api";
+import { RootState } from "../../../common/state/store";
 import { IListing } from "../../../models/model";
 
 export interface IListingState {
@@ -70,6 +71,7 @@ export const listingSlice = createSlice({
 },
   
 );
+export const getListingDraft = (state: RootState) => state.listing.newListing;
 
 export const {
   setNewListing,

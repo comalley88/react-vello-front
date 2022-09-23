@@ -1,17 +1,25 @@
 import { Button, Container } from '@mui/material';
 import React from 'react'
 import { useForm} from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../common/state/hooks';
-import { FormInputText } from '../components/forms/FormInputText'
-import ProgressMobileStepper from '../components/forms/Stepper';
-import SimplePaper from '../components/Paper';
-import { IListingFormValues, setNewListing } from '../features/listing/state/listingSlice';
+import { useAppDispatch, useAppSelector } from '../../common/state/hooks';
+import { RootState } from '../../common/state/store';
+import { FormInputText } from '../../components/forms/FormInputText'
+import ProgressMobileStepper from '../../components/forms/Stepper';
+import SimplePaper from '../../components/Paper';
+import { getAllListings, getListingDraft, IListingFormValues, IListingState, setNewListing } from '../../features/listing/state/listingSlice';
 
-const RegisterBike = () => {
+const RegisterBike2 = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const { listingDraft,} = useSelector((state: RootState) => {
+    return {
+      listingDraft: getListingDraft(state),
+    };
+  });
+console.log("listingdraft is", listingDraft)
     const {control, handleSubmit } = useForm<IListingFormValues>({defaultValues: { 
       brand: "",
       model: "",
@@ -21,8 +29,9 @@ const RegisterBike = () => {
     }});
     
     const onSubmit = (data: IListingFormValues) => {
+      dispatch(getAllListings())
       console.log("data is", data)
-      dispatch(setNewListing(data));
+      dispatch(setNewListing({...listingDraft, yearPurchased: data.yearPurchased, description: data.description}));
       navigate("/page2");
       };
 
@@ -35,15 +44,15 @@ const RegisterBike = () => {
         <FormInputText sx={
           {my: 2}
         } 
-        name='brand' 
-        label='brand' 
+        name='yearPurchased' 
+        label='year purchased' 
         control={control}/>
         <FormInputText 
         sx={
           {my: 2}
         } 
-        name='model' 
-        label='model' 
+        name='description' 
+        label='description' 
         control={control}/>
     <Button color='primary' variant="contained" type="submit">
       SUBMIT
@@ -60,4 +69,4 @@ const RegisterBike = () => {
   )
 }
 
-export default RegisterBike
+export default RegisterBike2
