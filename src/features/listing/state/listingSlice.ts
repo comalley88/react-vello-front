@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Dayjs } from "dayjs";
 import apiUrls from "../../../api";
 import { RootState } from "../../../common/state/store";
 import { IListing } from "../../../models/model";
@@ -12,7 +13,7 @@ export interface IListingState {
 export interface IListingFormValues {
     brand: string;
     model: string;
-    yearPurchased: number;
+    yearPurchased: Dayjs["year"] | null;
     description: string;
     options: Array<string>;
 }
@@ -22,7 +23,7 @@ const initialState: IListingState = {
   newListing: {
     brand: "",
     model: "",
-    yearPurchased: 0,
+    yearPurchased: null,
     description: "",
     options: [],
   }

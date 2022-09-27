@@ -6,16 +6,14 @@ export default function SimplePaper({children}: {children: React.ReactNode}) {
   return (
     <Box
       sx={{
+        width: "30%",
         position: "absolute",
         top: "50%",
         left: "50%",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
         flexWrap: 'wrap',
-        '& > :not(style)': {
-          m: 1,
-          width: "md",
-        },
+        maxWidth: 'md'
       }}
     >
       <Paper

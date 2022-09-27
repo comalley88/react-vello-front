@@ -44,7 +44,7 @@ const RegisterBike3 = () => {
     <SimplePaper>
     <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
-        <FormChipInput control={control}/>
+    <FormChipInput  control={control}/>
         <FormInputText 
         sx={
           {my: 2}
@@ -52,6 +52,7 @@ const RegisterBike3 = () => {
         name='description' 
         label='description' 
         control={control}/>
+       
     <Button color='primary' variant="contained" type="submit">
       SUBMIT
     </Button>

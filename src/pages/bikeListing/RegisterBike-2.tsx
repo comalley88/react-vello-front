@@ -1,14 +1,17 @@
-import { Button, Container } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
+import { red } from '@mui/material/colors';
 import React from 'react'
 import { useForm} from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../common/state/hooks';
+import { useAppDispatch } from '../../common/state/hooks';
 import { RootState } from '../../common/state/store';
+import { FormDatePicker } from '../../components/forms/FormDatePicker';
 import { FormInputText } from '../../components/forms/FormInputText'
 import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
-import { getAllListings, getListingDraft, IListingFormValues, IListingState, setNewListing } from '../../features/listing/state/listingSlice';
+import dayjs from 'dayjs';
+import { getAllListings, getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
 
 const RegisterBike2 = () => {
   const navigate = useNavigate();
@@ -20,13 +23,14 @@ const RegisterBike2 = () => {
     };
   });
 console.log("listingdraft is", listingDraft)
-    const {control, handleSubmit } = useForm<IListingFormValues>({defaultValues: { 
+    const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
       brand: "",
       model: "",
-      yearPurchased: 0,
+      yearPurchased: dayjs().format("YYYY"),
       description: "",
       options: []
     }});
+
     
     const onSubmit = (data: IListingFormValues) => {
       dispatch(getAllListings())
@@ -34,27 +38,27 @@ console.log("listingdraft is", listingDraft)
       dispatch(setNewListing({...listingDraft, yearPurchased: data.yearPurchased, description: data.description}));
       navigate("./../page3");
       };
-
+console.log("today is", dayjs().format("YYYY"))
   return (
     <>
     <Container>
     <SimplePaper>
     <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInputText sx={
-          {my: 2}
-        } 
-        name='yearPurchased' 
-        label='year purchased' 
+        <FormDatePicker
+        name="yearPurchased"
         control={control}/>
+
+        {errors.yearPurchased?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
         <FormInputText 
         sx={
-          {my: 2}
+          {mt: 2}
         } 
         name='description' 
         label='description' 
         control={control}/>
-    <Button color='primary' variant="contained" type="submit">
+        {errors.description?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
+    <Button sx={{my:2}} color='primary' variant="contained" type="submit">
       SUBMIT
     </Button>
   </form>

@@ -1,4 +1,6 @@
-import { Button, Container } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
+import { red } from '@mui/material/colors';
+import dayjs from 'dayjs';
 import React from 'react'
 import { useForm} from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +14,10 @@ const RegisterBike = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-    const {control, handleSubmit } = useForm<IListingFormValues>({defaultValues: { 
+    const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
       brand: "",
       model: "",
-      yearPurchased: 0,
+      yearPurchased: dayjs().format("YYYY"),
       description: "",
       options: []
     }});
@@ -39,6 +41,7 @@ const RegisterBike = () => {
         name='brand' 
         label='brand' 
         control={control}/>
+        {errors.brand?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
         <FormInputText 
         sx={
           {my: 2}
@@ -46,7 +49,8 @@ const RegisterBike = () => {
         name='model' 
         label='model' 
         control={control}/>
-    <Button color='primary' variant="contained" type="submit">
+         {errors.model?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
+    <Button sx={{my:2}} color='primary' variant="contained" type="submit">
       SUBMIT
     </Button>
   </form>

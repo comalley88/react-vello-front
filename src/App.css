@@ -1,3 +1,8 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -39,6 +44,10 @@
 
 .MuiToolbar-root {
   background-color: #002171;
+}
+
+.MuiFormControl-root.MuiTextField-root {
+  width: 100%;
 }
 
 
