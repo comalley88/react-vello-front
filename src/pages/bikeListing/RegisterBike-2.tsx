@@ -26,7 +26,7 @@ console.log("listingdraft is", listingDraft)
     const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
       brand: "",
       model: "",
-      yearPurchased: dayjs().format("YYYY"),
+      yearPurchased: dayjs(),
       description: "",
       options: []
     }});
@@ -35,10 +35,10 @@ console.log("listingdraft is", listingDraft)
     const onSubmit = (data: IListingFormValues) => {
       dispatch(getAllListings())
       console.log("data is", data)
-      dispatch(setNewListing({...listingDraft, yearPurchased: data.yearPurchased, description: data.description}));
+      dispatch(setNewListing({...listingDraft, yearPurchased: dayjs(data.yearPurchased).get('year'), description: data.description}));
       navigate("./../page3");
       };
-console.log("today is", dayjs().format("YYYY"))
+console.log("today is", dayjs().get('year'))
   return (
     <>
     <Container>

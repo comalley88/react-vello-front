@@ -17,7 +17,7 @@ const RegisterBike = () => {
     const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
       brand: "",
       model: "",
-      yearPurchased: dayjs().format("YYYY"),
+      yearPurchased: dayjs().get('year'),
       description: "",
       options: []
     }});
