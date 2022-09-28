@@ -13,7 +13,7 @@ import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
 import { getAllListings, getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
 
-const RegisterBike3 = () => {
+const RegisterBike4 = () => {
   
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -25,18 +25,26 @@ const RegisterBike3 = () => {
     };
   });
 
-    const {control, handleSubmit, formState: {errors}} = useForm<IListingFormValues>({defaultValues: { 
+    const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
       brand: "",
       model: "",
       yearPurchased: 0,
       description: "",
-      options: []
+      options: [],
+      address: {
+        addressLine1: "",
+        addressLine2: "",
+        postcode: "",
+        city: "",
+        country: ""
+        
+      }
     }});
     
     const onSubmit = (data: IListingFormValues) => {
       dispatch(getAllListings())
       dispatch(setNewListing({...listingDraft, options: data.options}));
-      navigate("./../page4")
+      navigate("tbc");
       };
 
   return (
@@ -45,16 +53,30 @@ const RegisterBike3 = () => {
     <SimplePaper>
     <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
-    <FormChipInput  control={control}/>
-    {errors.options?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
         <FormInputText 
         sx={
           {my: 2}
         } 
-        name='description' 
-        label='description' 
+        name='address.addressLine1' 
+        label='Address Line 1' 
         control={control}/>
-      {errors.description?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
+       {errors.address?.addressLine1?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
+       <FormInputText 
+        sx={
+          {my: 2}
+        } 
+        name='address.addressLine2' 
+        label='Address Line 2' 
+        control={control}/>
+       {errors.address?.addressLine2?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
+       <FormInputText 
+        sx={
+          {my: 2}
+        } 
+        name='address.postcode' 
+        label='Postal Code' 
+        control={control}/>
+       {errors.address?.postcode?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
     <Button color='primary' variant="contained" type="submit">
       SUBMIT
     </Button>
@@ -70,4 +92,4 @@ const RegisterBike3 = () => {
   )
 }
 
-export default RegisterBike3
+export default RegisterBike4

@@ -6,6 +6,7 @@ import SignUp from '../pages/Signup'
 import Layout from './Layout'
 import RegisterBike2 from '../pages/bikeListing/RegisterBike-2'
 import RegisterBike3 from '../pages/bikeListing/RegisterBike-3'
+import RegisterBike4 from '../pages/bikeListing/RegisterBike-4'
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
           <Route path="register-bike" element={<RegisterBike/>}/>
           <Route path='register-bike/page2' element={<RegisterBike2/>}/>
           <Route path='register-bike/page3' element={<RegisterBike3/>}/>
+          <Route path='register-bike/page4' element={<RegisterBike4/>}/>
         </Route> 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
