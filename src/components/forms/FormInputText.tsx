@@ -1,7 +1,5 @@
 import {Controller} from "react-hook-form";
-import React from "react";
 import { TextField, TextFieldProps } from "@mui/material";
-import { errorSelector } from "../../features/auth/state/appStateSlice";
 
 export interface IFormInputText {
   name: string;

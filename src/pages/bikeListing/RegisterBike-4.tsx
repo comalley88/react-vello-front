@@ -1,46 +1,42 @@
-import { LabelSharp } from '@mui/icons-material';
-import { Button, Chip, Container, Typography } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
 import { red } from '@mui/material/colors';
-import React, { useState } from 'react'
-import { useEffect } from 'react';
-import { Controller, useForm} from 'react-hook-form';
+import axios from 'axios';
+import React from 'react';
+import { useForm} from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../common/state/hooks';
+import { useAppDispatch } from '../../common/state/hooks';
 import { RootState } from '../../common/state/store';
-import FormChipInput from '../../components/forms/FormChipInput';
+import ComboBox from '../../components/forms/Autocomplete';
 import { FormInputText } from '../../components/forms/FormInputText'
-import { FormSelectInput } from '../../components/forms/FormSelectInput';
 import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
 import { getAllListings, getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
-const axios = require("axios");
+
 
 const RegisterBike4 = () => {
 
-const [countries, setCountries] = useState([])
-
-
-useEffect(() => {
-  const  getCountries = async () => {
-    try {
-      const response = await axios.get('https://restcountries.com/v3.1/all',{
-      });
-      setCountries(response.data.map((country: { name: { common: string; }; }) => country.name.common));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  getCountries()
-}, [])
-
-console.log(countries)
-
-
-  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [countries, setCountries] = React.useState([{label: 'France', code: 'FR'}])
+
+  React.useEffect(() => {
+      async function getCountries() {
+          try {
+            const response = await axios.get('https://restcountries.com/v3.1/all');
+            const data = response.data;
+            const countryArray = data.map((item: { name: { common: string; } }) => {
+              const {name: {common: countryName}} = item
+              return countryName
+            })
+            setCountries(countryArray)
+          } catch (error) {
+            console.error(error);
+          }
+        } getCountries();
+        
+  }, [])
 
   const { listingDraft,} = useSelector((state: RootState) => {
     return {
@@ -48,7 +44,8 @@ console.log(countries)
     };
   });
 
-    const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
+    const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({
+      defaultValues: { 
       brand: "",
       model: "",
       yearPurchased: 0,
@@ -66,7 +63,7 @@ console.log(countries)
     
     const onSubmit = (data: IListingFormValues) => {
       dispatch(getAllListings())
-      dispatch(setNewListing({...listingDraft, options: data.options}));
+      dispatch(setNewListing({...listingDraft, address: {addressLine1: data.address.addressLine1, addressLine2: data.address.addressLine2, postcode: data.address.postcode, country: data.address.country, city:data.address.city}}));
       navigate("tbc");
       };
 
@@ -99,13 +96,22 @@ console.log(countries)
         name='address.postcode' 
         label='Postal Code' 
         control={control}/>
+        <FormInputText 
+        sx={
+          {my: 2}
+        } 
+        name='address.city' 
+        label='City' 
+        control={control}/>
        {errors.address?.postcode?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
-        <FormSelectInput
-        label="Country"
-        name="address.country"
-        control={control}
-        menuItems={countries}
-        />
+       <ComboBox 
+       countries={countries}
+       control={control}
+       name={'address.country'}
+       label="Select Country"
+       errors={errors}
+       defaultValue={""}
+       />
     <Button color='primary' variant="contained" type="submit">
       SUBMIT
     </Button>

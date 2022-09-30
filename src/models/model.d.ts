@@ -20,5 +20,5 @@ export interface IAddress {
   addressLine2: string,
   postcode: string,
   city: string,
-  country: string,
+  country: string
 }
