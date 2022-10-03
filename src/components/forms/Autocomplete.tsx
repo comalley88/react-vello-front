@@ -23,6 +23,7 @@ export default function ComboBox({
           options={countries}
           renderInput={(params) => (
             <TextField
+            sx={{my:2}}
               {...params}
               label={label}
               error={errors[name]}

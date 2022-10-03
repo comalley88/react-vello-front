@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../common/state/hooks';
 import { RootState } from '../../common/state/store';
 import ComboBox from '../../components/forms/Autocomplete';
 import { FormInputText } from '../../components/forms/FormInputText'
+import GoogleMaps from '../../components/forms/GoogleMaps';
 import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
 import { getAllListings, getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
@@ -96,21 +97,21 @@ const RegisterBike4 = () => {
         name='address.postcode' 
         label='Postal Code' 
         control={control}/>
-        <FormInputText 
-        sx={
-          {my: 2}
-        } 
-        name='address.city' 
-        label='City' 
-        control={control}/>
+        <GoogleMaps
+        name="address.city"
+        control={control}
+        defaultValue=""
+        />
        {errors.address?.postcode?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
        <ComboBox 
+       sx={
+        {my: 2}
+      } 
        countries={countries}
        control={control}
        name={'address.country'}
        label="Select Country"
        errors={errors}
-       defaultValue={""}
        />
     <Button color='primary' variant="contained" type="submit">
       SUBMIT
