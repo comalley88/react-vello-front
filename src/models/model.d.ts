@@ -22,3 +22,8 @@ export interface IAddress {
   city: string,
   country: string
 }
+
+export interface ITelephone {
+  prefix: string,
+  number: string
+}

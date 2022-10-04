@@ -65,7 +65,7 @@ const RegisterBike4 = () => {
     const onSubmit = (data: IListingFormValues) => {
       dispatch(getAllListings())
       dispatch(setNewListing({...listingDraft, address: {addressLine1: data.address.addressLine1, addressLine2: data.address.addressLine2, postcode: data.address.postcode, country: data.address.country, city:data.address.city}}));
-      navigate("tbc");
+      navigate("./../page5");
       };
 
   return (

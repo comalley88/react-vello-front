@@ -6,9 +6,7 @@ import { Controller } from 'react-hook-form';
 export default function ComboBox({
     countries,
     label,
-    renderInput,
     control,
-    defaultValue,
     name,
     errors,
 }: any) {
@@ -17,7 +15,6 @@ export default function ComboBox({
     <Controller
       name={name}
       control={control}
-      defaultValue={defaultValue}
       render={({ field }) => (
         <Autocomplete
           options={countries}
@@ -35,7 +32,6 @@ export default function ComboBox({
             value === undefined || value === "" || option === value
           }
           onChange={(_, data) => {
-            console.log("data is", data);
             field.onChange(data)}}
         />
       )}

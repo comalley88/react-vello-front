@@ -3,7 +3,7 @@ import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import apiUrls from "../../../api";
 import { RootState } from "../../../common/state/store";
-import { IAddress, IListing } from "../../../models/model";
+import { IAddress, IListing, ITelephone } from "../../../models/model";
 
 export interface IListingState {
     all: Array<IListing>
@@ -16,7 +16,9 @@ export interface IListingFormValues {
     yearPurchased: Dayjs | number;
     description: string;
     options: Array<string>;
-    address: IAddress
+    address: IAddress;
+    telephone: ITelephone,
+    dailyRate: number
 }
 
 const initialState: IListingState = {
@@ -33,7 +35,12 @@ const initialState: IListingState = {
       postcode: "",
       city: "",
       country: ""
-    }
+    },
+    telephone: {
+      prefix: "",
+      number: ""
+    },
+    dailyRate: 0
   }
 };
 
