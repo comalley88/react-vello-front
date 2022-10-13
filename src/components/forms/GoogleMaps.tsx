@@ -8,9 +8,12 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 import { Controller } from 'react-hook-form';
-
-// This key was created specifically for the demo in mui.com.
-// You need to create a new one for your application.
+import  {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import { setDestinationCoords } from '../../features/destination/destinationSlice';
+import { useAppDispatch } from '../../common/state/hooks';
 
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
@@ -18,7 +21,6 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
     return;
   }
 
-  
 
   const script = document.createElement('script');
   script.setAttribute('async', '');
@@ -46,10 +48,16 @@ export interface PlaceType {
 export interface IGoogleMapsInputText {
     name: string;
     defaultValue: string;
-    control: any
+    control: any;
+    setCoords?: boolean
   }
 
-export default function GoogleMaps({name, control, defaultValue, ...props}: IGoogleMapsInputText) {
+const API_Key = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+
+export default function GoogleMaps({name, control, defaultValue, setCoords}: IGoogleMapsInputText) {
+
+  const dispatch = useAppDispatch();
+
   const [value, setValue] = React.useState<PlaceType | null>(null);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
@@ -58,7 +66,7 @@ export default function GoogleMaps({name, control, defaultValue, ...props}: IGoo
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${API_Key}&libraries=places`,
         document.querySelector('head'),
         'google-maps',
       );
@@ -101,7 +109,7 @@ export default function GoogleMaps({name, control, defaultValue, ...props}: IGoo
       return undefined;
     }
 
-    fetch({ input: inputValue, types: ['(cities)']}, (results?: readonly PlaceType[]) => {
+    fetch({ input: inputValue, types: ['geocode']}, (results?: readonly PlaceType[]) => {
       if (active) {
         let newOptions: readonly PlaceType[] = [];
 
@@ -147,7 +155,14 @@ export default function GoogleMaps({name, control, defaultValue, ...props}: IGoo
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
-      }}
+        setCoords &&
+        getGeocode({ address: inputValue }).then((results) => {
+          const { lat, lng } = getLatLng(results[0]);
+          dispatch(setDestinationCoords({latitude: lat, longitude: lng}))
+          console.log("📍 Coordinates: ", { lat, lng });
+        });
+      }
+      }
       renderInput={(params) => (
         <TextField sx={{my:2}} {...params} label="City" fullWidth />
       )}

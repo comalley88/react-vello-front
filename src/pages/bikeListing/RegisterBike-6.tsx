@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../common/state/hooks';
 import { RootState } from '../../common/state/store';
 import { DailyRateAdjust } from '../../components/forms/DailyRateAdjust';
 import ProgressMobileStepper from '../../components/forms/Stepper';
+import Map from '../../components/Map';
 import SimplePaper from '../../components/Paper';
 import {  getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
 
@@ -29,21 +30,24 @@ const RegisterBike6 = () => {
     }});
     
     const onSubmit = (data: IListingFormValues) => {
-      // dispatch(setNewListing({...listingDraft, dailyRate:  data.dailyRate}));
-      axios.post(`${baseUrl}/api/addresses`, {
-        data: listingDraft.address
-      })
-      .then(function (response) {
-        console.log("response is", response?.data?.data?.id);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      };
+      dispatch(setNewListing({...listingDraft, dailyRate:  data.dailyRate}))
+      // axios.post(`${baseUrl}/api/bike-listings`, {
+      //   data: listingDraft
+      // })
+      // .then(function (response) {
+      //   console.log("response is", response);
+      // })
+      // .then
+      // .catch(function (error) {
+      //   console.log(error);
+      // })
+      // };
+    }
 
   return (
     <>
     <Container>
+      <Map/>
     <SimplePaper>
     <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
