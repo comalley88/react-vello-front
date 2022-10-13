@@ -7,6 +7,7 @@ const CounterField = ({value, onChange, ...props}: TextFieldProps & any) => {
     return (
         <>
         <IconButton
+        sx={{p:2}}
             onClick={() => {
                 value ++
                 onChange(value)
@@ -16,6 +17,7 @@ const CounterField = ({value, onChange, ...props}: TextFieldProps & any) => {
             <AddCircleOutline />
         </IconButton>
         <TextField
+                sx={{mx:1}}
                 {...props}
                 fullWidth
                 variant={'outlined'}
@@ -25,7 +27,8 @@ const CounterField = ({value, onChange, ...props}: TextFieldProps & any) => {
                 value={value as number}
                  />
         <IconButton
-            onClick={() => {
+sx={{p:2}}            
+onClick={() => {
                 value --
                 onChange(value)
             } }

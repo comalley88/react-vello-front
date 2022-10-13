@@ -58,7 +58,7 @@ export default function GoogleMaps({name, control, defaultValue, ...props}: IGoo
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MYAPIMAPSKEY}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places`,
         document.querySelector('head'),
         'google-maps',
       );

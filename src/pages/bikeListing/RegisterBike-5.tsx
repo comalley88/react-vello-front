@@ -72,7 +72,7 @@ const RegisterBike5 = () => {
     const onSubmit = (data: IListingFormValues) => {
       dispatch(getAllListings())
       dispatch(setNewListing({...listingDraft, telephone:  {prefix: data.telephone.prefix, number: data.telephone.number}}));
-      navigate(".././page6");
+      navigate("./../page6");
       };
 
   return (
