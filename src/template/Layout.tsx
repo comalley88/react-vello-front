@@ -7,11 +7,9 @@ const Layout = () => {
   return (
     <>
     <NavBar/>
-    <Container maxWidth="xl">
     <main>
       <Outlet/>        
     </main> 
-    </Container>
     </>
     
   )

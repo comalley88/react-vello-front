@@ -47,7 +47,6 @@ const RegisterBike6 = () => {
   return (
     <>
     <Container>
-      <Map/>
     <SimplePaper>
     <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>

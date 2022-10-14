@@ -6,12 +6,14 @@ const tokenValue: string = process.env.REACT_APP_MAPBOX_API
 
 mapboxgl.accessToken = tokenValue
 
+interface IMap  {
+  latitide: number,
+  longitude: number
+}
 
-const Map = () => { 
+const Map = ({latitide, longitude}: IMap) => { 
     const mapContainer = useRef<any>(null);
     const map = useRef<mapboxgl.Map | null>(null);
-    const [lng, setLng] = useState(5.36);
-    const [lat, setLat] = useState(43.29);
     const [zoom, setZoom] = useState(9);
 
     useEffect(() => {
@@ -19,7 +21,7 @@ const Map = () => {
         map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [lng, lat],
+        center: [longitude, latitide],
         zoom: zoom
         });
         });
@@ -27,7 +29,7 @@ const Map = () => {
 
   return (
     <div>
-    <div style={{height: "400px"}} ref={mapContainer} className="map-container" />
+    <div style={{height: "92vh"}} ref={mapContainer} className="map-container" />
     </div>
   )
 }

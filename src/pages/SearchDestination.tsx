@@ -1,19 +1,11 @@
-import { Google } from '@mui/icons-material';
-import { Box, Button, Container, Paper, Typography } from '@mui/material';
-import { red } from '@mui/material/colors';
-import dayjs from 'dayjs';
+import { Box, Button, Typography } from '@mui/material';
 import { useForm} from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../common/state/hooks';
-import { RootState } from '../common/state/store';
-import { FormDatePicker } from '../components/forms/FormDatePicker';
-import { FormInputText } from '../components/forms/FormInputText';
 import GoogleMaps from '../components/forms/GoogleMaps';
 import ProgressMobileStepper from '../components/forms/Stepper';
-import SimplePaper from '../components/Paper';
 import { IDestinationCoordinates, setDestinationCoords } from '../features/destination/destinationSlice';
-import { getAllListings, setNewListing } from '../features/listing/state/listingSlice';
+import image from ".././images/cyclingMountains.jpg"
 
 const SearchDestination = () => {
   const navigate = useNavigate();
@@ -26,25 +18,36 @@ const SearchDestination = () => {
     }
   })
 
-   const onSubmit = () => {
-    navigate("./results")
+   const onSubmit = (data: any) => {
+    console.log(data)
+    navigate("/results")
    } 
 
 
   return (
-    <>
     <Box
         sx={{
           display: 'flex',
           flexDirection: 'row',
+          height: '92vh',
+          width: '100%'
         }}
       >
         <Box
         sx={{
-            backgroundColor: 'red'
+            display: 'flex',
+            backgroundColor: '#009688',
+            width: "55%",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+         style={{
+            width: "inherit",
+          }}
+        onSubmit={handleSubmit(onSubmit)}>
+    <Typography variant='h4' sx={{color: "#002171"}}>Louez une velo dans deux minutes pour votre prochaine vacances! </Typography>
     <GoogleMaps name={'Destination'} defaultValue={''} control={control} setCoords/>
     <Button sx={{my:2}} color='primary' variant="contained" type="submit">
       SUBMIT
@@ -53,19 +56,18 @@ const SearchDestination = () => {
         </Box>
         <Box
         sx={{
+        width: "45%",
           display: 'flex',
           flexDirection: 'row',
           bgcolor: 'blue',
-        //   backgroundImage: `url(${Image})`
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover",
+          aspectRatio: "4/3",
+          backgroundPosition: 'center'
         }}
       >
     </Box>
     </Box>
-    
-    
-   
-       
-    </>
  
    
   )
