@@ -3,23 +3,39 @@ import { useForm} from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../common/state/hooks';
 import GoogleMaps from '../components/forms/GoogleMaps';
-import ProgressMobileStepper from '../components/forms/Stepper';
-import { IDestinationCoordinates, setDestinationCoords } from '../features/destination/destinationSlice';
+import { getDestination, IDestinationSearchForm, setDestination } from '../features/destination/destinationSlice';
 import image from ".././images/cyclingMountains.jpg"
+import { FormDatePicker } from '../components/forms/FormDatePicker';
+import { useSelector } from 'react-redux';
+import { RootState } from '../common/state/store';
+import dayjs from 'dayjs';
 
 const SearchDestination = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const {control, handleSubmit} = useForm<IDestinationCoordinates>({
-    defaultValues: { 
-    latitude: 0,
-    longitude: 0,
+  const {destination} = useSelector((state: RootState) => {
+    return {
+        destination: getDestination(state)
     }
   })
 
-   const onSubmit = (data: any) => {
-    console.log(data)
+  const {control, handleSubmit} = useForm<IDestinationSearchForm>({
+    defaultValues: { 
+    destination: "",
+    dates: {
+        startDate: dayjs().valueOf(),
+        endDate: dayjs().valueOf(),
+    }
+}
+  })
+
+   const onSubmit = (data: IDestinationSearchForm) => {
+    dispatch(setDestination({...destination, destination: data.destination, 
+        dates: {
+            startDate: dayjs(data.dates.startDate).valueOf(),
+            endDate: dayjs(data.dates.endDate).valueOf()
+        }}))
     navigate("/results")
    } 
 
@@ -48,7 +64,12 @@ const SearchDestination = () => {
           }}
         onSubmit={handleSubmit(onSubmit)}>
     <Typography variant='h4' sx={{color: "#002171"}}>Louez une velo dans deux minutes pour votre prochaine vacances! </Typography>
-    <GoogleMaps name={'Destination'} defaultValue={''} control={control} setCoords/>
+    <GoogleMaps name={'destination'} control={control} setCoords/>
+    <Box sx={{display: "flex"}}>
+    <FormDatePicker sx={{mr: 2}} control={control} name={'dates.startDate'} label={'Start Date'} views={["year", "month", "day"]}/>
+    <FormDatePicker control={control} name={'dates.endDate'} label={'End Date'} views={["year", "month", "day"]}/>
+    </Box>
+   
     <Button sx={{my:2}} color='primary' variant="contained" type="submit">
       SUBMIT
     </Button>

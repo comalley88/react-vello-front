@@ -46,6 +46,8 @@ console.log("today is", dayjs().get('year'))
     <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
         <FormDatePicker
+        label='Year Purchased'
+        views={['year']}
         name="yearPurchased"
         control={control}/>
 

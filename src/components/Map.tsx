@@ -14,7 +14,7 @@ interface IMap  {
 const Map = ({latitide, longitude}: IMap) => { 
     const mapContainer = useRef<any>(null);
     const map = useRef<mapboxgl.Map | null>(null);
-    const [zoom, setZoom] = useState(9);
+    const [zoom, setZoom] = useState(12);
 
     useEffect(() => {
         if (map.current) return; // initialize map only once

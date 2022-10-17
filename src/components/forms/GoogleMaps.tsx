@@ -47,14 +47,13 @@ export interface PlaceType {
 
 export interface IGoogleMapsInputText {
     name: string;
-    defaultValue: string;
     control: any;
     setCoords?: boolean
   }
 
 const API_Key = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
-export default function GoogleMaps({name, control, defaultValue, setCoords}: IGoogleMapsInputText) {
+export default function GoogleMaps({name, control, setCoords}: IGoogleMapsInputText) {
 
   const dispatch = useAppDispatch();
 
@@ -134,7 +133,6 @@ export default function GoogleMaps({name, control, defaultValue, setCoords}: IGo
     <Controller
     name={name}
     control={control}
-    defaultValue={defaultValue}
     render={({ field : {onChange, value}}) => (
     <Autocomplete
 
@@ -159,7 +157,6 @@ export default function GoogleMaps({name, control, defaultValue, setCoords}: IGo
         getGeocode({ address: inputValue }).then((results) => {
           const { lat, lng } = getLatLng(results[0]);
           dispatch(setDestinationCoords({latitude: lat, longitude: lng}))
-          console.log("📍 Coordinates: ", { lat, lng });
         });
       }
       }

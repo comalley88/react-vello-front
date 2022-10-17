@@ -1,11 +1,16 @@
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TextField } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { TextField, TextFieldProps } from "@mui/material";
+import { LocalizationProvider, DatePicker, CalendarPickerView } from "@mui/x-date-pickers";
 import { Controller } from 'react-hook-form';
 
-
-export const FormDatePicker = ({control, name}: any) => {
-
+export interface IFormDatePicker {
+  control: any;
+  name: string;
+  label: string;
+  views: CalendarPickerView[]
+}
+export const FormDatePicker = ({control, name, label, views, ...props}: IFormDatePicker & TextFieldProps ) => {
+ 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
        <Controller
@@ -15,11 +20,11 @@ export const FormDatePicker = ({control, name}: any) => {
         render={({ field: { onChange, value} }) => (
           <DatePicker
           openTo='year'
-          views={['year']}
-          label="Year puchased"
+          views={views}
+          label={label}
           value={value}
           onChange={onChange}
-          renderInput={(params) => <TextField {...params} helperText={null} />}
+          renderInput={(params) => <TextField  {...props} {...params} helperText={null} />}
         />
         )
         }
