@@ -39,7 +39,7 @@ const RegisterBike4 = () => {
         
   }, [])
 
-  const { listingDraft,} = useSelector((state: RootState) => {
+  const { listingDraft} = useSelector((state: RootState) => {
     return {
       listingDraft: getListingDraft(state),
     };
@@ -100,7 +100,6 @@ const RegisterBike4 = () => {
         <GoogleMaps
         name="address.city"
         control={control}
-        defaultValue=""
         />
        {errors.address?.postcode?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
        <ComboBox 

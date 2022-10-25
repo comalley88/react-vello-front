@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
@@ -48,12 +48,13 @@ export interface PlaceType {
 export interface IGoogleMapsInputText {
     name: string;
     control: any;
-    setCoords?: boolean
+    setCoords?: boolean;
+    defaultValue?: string
   }
 
 const API_Key = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
-export default function GoogleMaps({name, control, setCoords}: IGoogleMapsInputText) {
+export default function GoogleMaps({name, control, setCoords, defaultValue, ...props}: IGoogleMapsInputText & TextFieldProps) {
 
   const dispatch = useAppDispatch();
 
@@ -131,6 +132,7 @@ export default function GoogleMaps({name, control, setCoords}: IGoogleMapsInputT
 
   return (
     <Controller
+    defaultValue={defaultValue}
     name={name}
     control={control}
     render={({ field : {onChange, value}}) => (
@@ -161,7 +163,7 @@ export default function GoogleMaps({name, control, setCoords}: IGoogleMapsInputT
       }
       }
       renderInput={(params) => (
-        <TextField sx={{my:2}} {...params} label="City" fullWidth />
+        <TextField sx={{my:2}} {...params} {...props} label="City" fullWidth />
       )}
       renderOption={(props, option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;

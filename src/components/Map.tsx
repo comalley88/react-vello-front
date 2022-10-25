@@ -29,7 +29,7 @@ const Map = ({latitide, longitude}: IMap) => {
 
   return (
     <div>
-    <div style={{height: "92vh"}} ref={mapContainer} className="map-container" />
+    <div style={{width: "100%", height: "80vh"}} ref={mapContainer} className="map-container" />
     </div>
   )
 }
