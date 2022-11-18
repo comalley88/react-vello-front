@@ -6,15 +6,18 @@ import "./index.css";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { store } from "./common/state/store";
 import { Provider } from "react-redux";
+import AuthProvider from "./components/AuthProvider/AuthProvider";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
+      <AuthProvider>
       <Provider store={store}>
         <App />
       </Provider>
+      </AuthProvider>
     </StyledEngineProvider>
   </React.StrictMode>,
 );

@@ -13,6 +13,7 @@ export interface IListing {
   yearPurchased: number,
   description: description,
   options: string,
+  photo: {},
 }
 
 export interface IAddress {

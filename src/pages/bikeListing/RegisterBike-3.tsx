@@ -1,17 +1,14 @@
-import { LabelSharp } from '@mui/icons-material';
-import { Button, Chip, Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import { red } from '@mui/material/colors';
-import React from 'react'
-import { Controller, useForm} from 'react-hook-form';
+import { useForm} from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../common/state/hooks';
+import { useAppDispatch } from '../../common/state/hooks';
 import { RootState } from '../../common/state/store';
 import FormChipInput from '../../components/forms/FormChipInput';
-import { FormInputText } from '../../components/forms/FormInputText'
 import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
-import { getAllListings, getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
+import {getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
 
 const RegisterBike3 = () => {
   
@@ -24,17 +21,14 @@ const RegisterBike3 = () => {
       listingDraft: getListingDraft(state),
     };
   });
-
+  const sessionstorage = sessionStorage.getItem("options")
     const {control, handleSubmit, formState: {errors}} = useForm<IListingFormValues>({defaultValues: { 
-      brand: "",
-      model: "",
-      yearPurchased: 0,
-      description: "",
-      options: []
+      options: sessionstorage?.split(",") || []
     }});
-    
+
+
     const onSubmit = (data: IListingFormValues) => {
-      dispatch(getAllListings())
+      sessionStorage.setItem("options", `${data.options}`)
       dispatch(setNewListing({...listingDraft, options: data.options}));
       navigate("./../page4")
       };
@@ -43,21 +37,10 @@ const RegisterBike3 = () => {
     <>
     <Container>
     <SimplePaper>
-    <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
     <FormChipInput  control={control}/>
     {errors.options?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
-        <FormInputText 
-        sx={
-          {my: 2}
-        } 
-        name='description' 
-        label='description' 
-        control={control}/>
-      {errors.description?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
-    <Button color='primary' variant="contained" type="submit">
-      SUBMIT
-    </Button>
+    <ProgressMobileStepper activeStep={2}/>
   </form>
 
     </SimplePaper>

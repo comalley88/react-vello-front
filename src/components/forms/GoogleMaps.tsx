@@ -137,7 +137,6 @@ export default function GoogleMaps({name, control, setCoords, defaultValue, ...p
     control={control}
     render={({ field : {onChange, value}}) => (
     <Autocomplete
-
       id="google-map-demo"
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description 
@@ -145,7 +144,6 @@ export default function GoogleMaps({name, control, setCoords, defaultValue, ...p
       isOptionEqualToValue={(option: any, value: any) => option ? option.description === value : option.description === ""}
       filterOptions={(x) => x}
       options={options}
-      autoComplete
       includeInputInList    
       filterSelectedOptions
       value={value}
@@ -163,7 +161,9 @@ export default function GoogleMaps({name, control, setCoords, defaultValue, ...p
       }
       }
       renderInput={(params) => (
-        <TextField sx={{my:2}} {...params} {...props} label="City" fullWidth />
+        <TextField
+        autoComplete='new-password'
+        sx={{my:2}} {...params} {...props} label="City" fullWidth />
       )}
       renderOption={(props, option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;

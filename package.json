@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@types/autosuggest-highlight": "^3.2.0",
+    "@types/lodash": "^4.14.186",
     "@types/redux-logger": "^3.0.9"
   }
 }

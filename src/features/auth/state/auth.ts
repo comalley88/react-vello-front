@@ -5,6 +5,7 @@ import apiUrls from "../../../api";
 import { storeAuthInLocalStorage } from "../../utils/localStroage";
 import { IAppLoaderAction } from "../../auth/state/loaderHandleMiddleware";
 import { RootState } from "../../../common/state/store";
+import { setToken } from "../../../strapi/helpers";
 
 export interface IAuthFormData {
   email: string;
@@ -19,14 +20,15 @@ export interface IAuth {
 
 export const signIn = createAsyncThunk(
   "auth/login",
-  async ({ email, password, rememberme }: IAuthFormData & IAppLoaderAction) => {
+  async ({ email: identifier, password }: IAuthFormData & IAppLoaderAction) => {
+    
     const response = await axios.post<{ jwt: string; user: IUser }>(apiUrls.auth.signIn, {
-      identifier: email,
-      password,
-      from_environment: "WebApp",
-    });
+      identifier,password
+    }
+       
+    );
     const { jwt, user } = response.data;
-
+    setToken(jwt)
     return { jwt, user };
   },
 );

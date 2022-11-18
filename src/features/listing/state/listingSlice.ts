@@ -13,12 +13,13 @@ export interface IListingState {
 export interface IListingFormValues {
     brand: string;
     model: string;
-    yearPurchased: Dayjs | number;
+    yearPurchased: Dayjs | string;
     description: string;
     options: Array<string>;
     address: IAddress;
     telephone: ITelephone,
-    dailyRate: number
+    dailyRate: number,
+    photo: {}
 }
 
 const initialState: IListingState = {
@@ -40,7 +41,8 @@ const initialState: IListingState = {
       prefix: "",
       number: ""
     },
-    dailyRate: 0
+    dailyRate: 15,
+    photo: {}
   }
 };
 
@@ -52,6 +54,7 @@ export const getAllListings = createAsyncThunk(
     );
     return { data: (await response).data };
   },
+  
 );
 
 // export const updateMedia = createAsyncThunk(

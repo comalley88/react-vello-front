@@ -1,4 +1,4 @@
-import { Box, Button} from '@mui/material';
+import { Box, Button, Typography} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSelector } from 'react-redux';
 import { RootState } from '../common/state/store';
@@ -16,39 +16,26 @@ const MapPage = () => {
   return (
 <>
 <SearchBar/>
+<Grid  container>
+<Grid style={{height: "84vh", overflowY: "auto"}} md={4} lg={6} sx={{display: {xs: "none", md: "block"}}} >
+<Box sx={{display: "flex",alignItems:"baseline", justifyContent: "space-between", padding: "1em"}}>
+<Typography>12 results</Typography>
+<Button variant="outlined" style={{display: "inline"}}>Filters</Button>
+</Box>
 
-<Box sx={{
-    display: "flex",
-    width: "100vw",
-    height: "80vh"
-}}>
-<Box component="div" sx={{ overflow: 'auto', width: '50%' }} >
-<Button variant="outlined" style={{display: "inline"}}>Test</Button>
-  <Grid style={{paddingTop: "1em", paddingLeft: "1em"}} container columnSpacing={2} rowSpacing={2}>
+<Grid style={{padding: "1em"}} container spacing={2}>
 {Array.from(Array(12)).map((_, index) => (
-    <Grid xs={12} md={6} key={index}>
+    <Grid spacing={2} xs={12} lg={6} key={index}>
       <CardComp/>
     </Grid>
   ))}
-
 </Grid>
-</Box>
-
-
-
-
-<Box sx={{
-    width: "50%"
-}}>
+</Grid>
+<Grid xs={12} md={8} lg={6}>
 <Map latitide={coords.latitude} longitude={coords.longitude}/>
-
-</Box>
-
-</Box>
+</Grid>
+</Grid>
 </>
-
-    
-
   )
 }
 

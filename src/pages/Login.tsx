@@ -18,6 +18,7 @@ import { AppDispatch, RootState } from '../common/state/store';
 import { useDispatch, useSelector } from "react-redux";
 import { currentUserSelector, jwtSelector, signIn } from '../features/auth/state/auth';
 import NavBar from '../components/NavBar';
+import { setToken } from '../strapi/helpers';
 
 interface LoginFormInputs {
     email: string,
@@ -26,19 +27,6 @@ interface LoginFormInputs {
   }
 
 export const LOGIN_COMPONENT_ID = "loginComponent";
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 
 export default function Login() {
@@ -59,7 +47,7 @@ export default function Login() {
   React.useEffect(() => {
     if (curUser && jwt && jwt !== "") {
       console.log("in function")
-      navigate("/");
+      navigate("/destination");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curUser, jwt]);
@@ -67,7 +55,6 @@ export default function Login() {
   const { handleSubmit, formState: { errors }, control } = useForm<LoginFormInputs>();
 
     const onSubmit = (data: LoginFormInputs) => {
-      console.log(data)
     dispatch(signIn({ componentId: LOGIN_COMPONENT_ID, ...data }));
   };
 
@@ -163,7 +150,6 @@ export default function Login() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

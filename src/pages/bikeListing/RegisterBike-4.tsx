@@ -1,4 +1,4 @@
-import { Button, Container, Typography } from '@mui/material';
+import {  Container, Typography } from '@mui/material';
 import { red } from '@mui/material/colors';
 import axios from 'axios';
 import React from 'react';
@@ -12,7 +12,7 @@ import { FormInputText } from '../../components/forms/FormInputText'
 import GoogleMaps from '../../components/forms/GoogleMaps';
 import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
-import { getAllListings, getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
+import {  getListingDraft, IListingFormValues, setNewListing } from '../../features/listing/state/listingSlice';
 
 
 const RegisterBike4 = () => {
@@ -47,23 +47,21 @@ const RegisterBike4 = () => {
 
     const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({
       defaultValues: { 
-      brand: "",
-      model: "",
-      yearPurchased: 0,
-      description: "",
-      options: [],
       address: {
-        addressLine1: "",
-        addressLine2: "",
-        postcode: "",
-        city: "",
-        country: ""
-        
+        addressLine1: sessionStorage.getItem("addressLine1") || "",
+        addressLine2: sessionStorage.getItem("addressLine2") || "",
+        postcode: sessionStorage.getItem("postcode") || "",
+        city: sessionStorage.getItem("city") || "",
+        country: sessionStorage.getItem("country") || "",
       }
     }});
     
     const onSubmit = (data: IListingFormValues) => {
-      dispatch(getAllListings())
+      sessionStorage.setItem("addressLine1", `${data.address.addressLine1}`)
+      sessionStorage.setItem("addressLine2", `${data.address.addressLine2}`)
+      sessionStorage.setItem("postcode", `${data.address.postcode}`)
+      sessionStorage.setItem("city", `${data.address.city}`)
+      sessionStorage.setItem("country", `${data.address.country}`)
       dispatch(setNewListing({...listingDraft, address: {addressLine1: data.address.addressLine1, addressLine2: data.address.addressLine2, postcode: data.address.postcode, country: data.address.country, city:data.address.city}}));
       navigate("./../page5");
       };
@@ -72,9 +70,9 @@ const RegisterBike4 = () => {
     <>
     <Container>
     <SimplePaper>
-    <ProgressMobileStepper/>
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInputText 
+    <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+        <FormInputText
+        autoComplete="new-password"
         sx={
           {my: 2}
         } 
@@ -83,6 +81,7 @@ const RegisterBike4 = () => {
         control={control}/>
        {errors.address?.addressLine1?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
        <FormInputText 
+       autoComplete="new-password"
         sx={
           {my: 2}
         } 
@@ -91,6 +90,7 @@ const RegisterBike4 = () => {
         control={control}/>
        {errors.address?.addressLine2?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
        <FormInputText 
+       autoComplete="new-password"
         sx={
           {my: 2}
         } 
@@ -98,11 +98,13 @@ const RegisterBike4 = () => {
         label='Postal Code' 
         control={control}/>
         <GoogleMaps
+        autoComplete="new-password"
         name="address.city"
         control={control}
         />
        {errors.address?.postcode?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
-       <ComboBox 
+       <ComboBox
+       disablePortal
        sx={
         {my: 2}
       } 
@@ -112,9 +114,7 @@ const RegisterBike4 = () => {
        label="Select Country"
        errors={errors}
        />
-    <Button color='primary' variant="contained" type="submit">
-      SUBMIT
-    </Button>
+    <ProgressMobileStepper activeStep={3}/>
   </form>
 
     </SimplePaper>

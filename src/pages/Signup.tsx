@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,52 +7,71 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import TextInput from '../components/TextInput';
-import http from "../http"
+import { setToken } from '../strapi/helpers';
+import { SignupFormInputs, useAuthContext } from '../context/AuthContext';
+import { API } from '../strapi/constant';
+import { Alert, CircularProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-interface SignupFormInputs {
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string
-  }
-  
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 export default function SignUp() {
     const { handleSubmit, control } = useForm<SignupFormInputs>();
-    const [errorMessage, setErrorMessage] = React.useState(null)
-    const onSubmit = async (data: SignupFormInputs) => {
-      setErrorMessage(null)
-      http
-      .post('/api/auth/local/register', {...data, username: data.email})
-      .then(response => {
-        // Handle success.
-        console.log('Well done!');
-        console.log('User profile', response.data.user);
-        console.log('User token', response.data.jwt);
-      })
-      .catch(error => {
-        setErrorMessage(error.response.data.error.message);
-        console.log('An error occurred:', error.response.data.error.message);
-      });
-    };
+    const [errorMessage, setErrorMessage] = useState(null)
+    const [error, setError] = useState("");
+    const { setUser } = useAuthContext();
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
+    const onSubmit = async (values: SignupFormInputs) => {
+      const updatedValues = {...values, username: values.email} 
+     
+      setIsLoading(true);
+        try {
+          const response = await fetch(`${API}/auth/local/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedValues),
+          });
+    
+          const data = await response.json();
+          if (data?.error) {
+            throw data?.error;
+          } else {
+            // set the token
+            setToken(data.jwt);
+    
+            // set the user
+            console.log("data is", data)
+            setUser(data.user);
+            <>
+             <Alert severity="success">`Welcome to Vello ${data.user.username}!`</Alert>
+            </>
+           
+            navigate("/destination", { replace: true });
+          }
+        } catch (error) {
+          console.error(error);
+          setError("Something went wrong!");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+    
     
   return (
       <Container component="main" maxWidth="xs">
+        {error ? (
+                  <Alert
+                    severity="error"
+                    onClose={() => setError("")}
+                  >{error}</Alert>
+                ) : null}
         <CssBaseline />
         <Box
           sx={{
@@ -133,6 +151,7 @@ export default function SignUp() {
             </Typography>
             
             <Button
+              endIcon={isLoading ? <CircularProgress /> : null}
               type="submit"
               fullWidth
               color='primary'
@@ -150,7 +169,6 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
   );
 }

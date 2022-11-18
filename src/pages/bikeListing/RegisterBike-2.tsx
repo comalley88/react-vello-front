@@ -24,26 +24,22 @@ const RegisterBike2 = () => {
   });
 console.log("listingdraft is", listingDraft)
     const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({defaultValues: { 
-      brand: "",
-      model: "",
-      yearPurchased: dayjs(),
-      description: "",
-      options: []
+      yearPurchased: sessionStorage.getItem("yearPurchased") ||  dayjs().get('year'),
+      description: sessionStorage.getItem("description") || "",
     }});
 
     
     const onSubmit = (data: IListingFormValues) => {
-      dispatch(getAllListings())
-      console.log("data is", data)
-      dispatch(setNewListing({...listingDraft, yearPurchased: dayjs(data.yearPurchased).get('year'), description: data.description}));
+      sessionStorage.setItem("yearPurchased", `${data.yearPurchased}`)
+      sessionStorage.setItem("description", `${data.description}`)
+      dispatch(setNewListing({...listingDraft, yearPurchased: dayjs(data.yearPurchased).get('year').toString(), description: data.description}));
       navigate("./../page3");
       };
-console.log("today is", dayjs().get('year'))
+
   return (
     <>
     <Container>
     <SimplePaper>
-    <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
         <FormDatePicker
         label='Year Purchased'
@@ -60,9 +56,7 @@ console.log("today is", dayjs().get('year'))
         label='description' 
         control={control}/>
         {errors.description?.type === "required" && <Typography sx={{mb:1, color:red[500]}}>required field</Typography>}
-    <Button sx={{my:2}} color='primary' variant="contained" type="submit">
-      SUBMIT
-    </Button>
+        <ProgressMobileStepper activeStep={1}/>
   </form>
 
     </SimplePaper>

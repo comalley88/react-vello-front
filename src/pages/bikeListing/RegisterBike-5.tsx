@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../common/state/hooks';
 import { RootState } from '../../common/state/store';
 import ComboBox from '../../components/forms/Autocomplete';
+import FileInput from '../../components/forms/FileInput';
 import { FormInputText } from '../../components/forms/FormInputText';
 import ProgressMobileStepper from '../../components/forms/Stepper';
 import SimplePaper from '../../components/Paper';
@@ -24,8 +25,8 @@ const RegisterBike5 = () => {
   React.useEffect(() => {
       async function getCountries() {
           try {
-            const response = await axios.get('https://restcountries.com/v3.1/all');
-            const data = response.data;
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const data = await response.json();
             const countryArray = data.map((item: { 
               idd: {root: string, suffixes: Array<string>};
               name: { common: string; };
@@ -41,28 +42,15 @@ const RegisterBike5 = () => {
         
   }, [])
 
-  console.log("dialling codes are", countries)
   const { listingDraft,} = useSelector((state: RootState) => {
     return {
       listingDraft: getListingDraft(state),
     };
   });
 
-    const {control, handleSubmit, formState: {errors} } = useForm<IListingFormValues>({
+    const {control, handleSubmit, setValue, watch, formState: {errors} } = useForm<IListingFormValues>({
       defaultValues: { 
-      brand: "",
-      model: "",
-      yearPurchased: 0,
-      description: "",
-      options: [],
-      address: {
-        addressLine1: "",
-        addressLine2: "",
-        postcode: "",
-        city: "",
-        country: ""
-        
-      },
+      photo: [],
       telephone: {
         prefix: "",
         number: ""
@@ -70,8 +58,9 @@ const RegisterBike5 = () => {
     }});
     
     const onSubmit = (data: IListingFormValues) => {
+      console.log(data)
       dispatch(getAllListings())
-      dispatch(setNewListing({...listingDraft, telephone:  {prefix: data.telephone.prefix, number: data.telephone.number}}));
+      dispatch(setNewListing({...listingDraft, telephone:  {prefix: data.telephone.prefix, number: data.telephone.number}, photo: data.photo}));
       navigate("./../page6");
       };
 
@@ -79,7 +68,6 @@ const RegisterBike5 = () => {
     <>
     <Container>
     <SimplePaper>
-    <ProgressMobileStepper/>
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography variant='h5' sx={{mt: 2}}>Inscrire mon Velo</Typography>
       <Typography variant='subtitle1' sx={{color: '#002171', mb: 5}}>Quelle est votre numero de telephone</Typography>
@@ -104,10 +92,9 @@ const RegisterBike5 = () => {
     control={control}
     />
       </Box>
+      <FileInput setValue={setValue} name={'photo'} control={control} watch={watch}/>
       <Alert severity="info" sx={{mb: 4}}>vous serez contacte avec les info important. tinquite pas de spam!</Alert>
-      <Button color='primary' variant="contained" type="submit">
-      SUBMIT
-    </Button>
+      <ProgressMobileStepper activeStep={4}/>
   </form>
 
     </SimplePaper>
